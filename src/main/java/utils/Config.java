@@ -20,6 +20,11 @@ public final class Config {
   private static String SOLR_PATH;
   private static String SOLR_CORE;
   private static long PRODUCT_TTL;
+  //---Tilføjer ecryption_key så den kan hentes fra config.json
+  private static String ENCRYPTION_KEY;
+
+  //---gør det muligt at tilgå encryption key'en
+  public static char[] getEncryptionKey () {return ENCRYPTION_KEY.toCharArray();}
 
   public static long getProductTtl() {
     return PRODUCT_TTL;
@@ -99,5 +104,6 @@ public final class Config {
     SOLR_PATH = json.get("SOLR_PATH").toString().replace("\"", "");
     SOLR_CORE = json.get("SOLR_CORE").toString().replace("\"", "");
     PRODUCT_TTL = json.get("PRODUCT_TTL").getAsLong();
+    ENCRYPTION_KEY = json.get("ENCRYPTION_KEY").toString().replace("\"", "");
   }
 }

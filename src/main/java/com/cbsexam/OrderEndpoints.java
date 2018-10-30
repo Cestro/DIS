@@ -47,7 +47,7 @@ public class OrderEndpoints {
     // We convert the java object to json with GSON library imported in Maven
     String json = new Gson().toJson(orders);
 
-    //encryption er klassens navn og encryptDecreypt... er metoden er benyttes.
+    //--------encryption er klassens navn og encryptDecrypt... er metoden er benyttes.
     json = Encryption.encryptDecryptXOR(json);
 
     // Return a response with status 200 and JSON as type
