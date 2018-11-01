@@ -39,16 +39,17 @@ public class ProductEndpoints {
     return Response.status(200).type(MediaType.TEXT_PLAIN_TYPE).entity(json).build();
   }
 
+  //---Tilføjer productchache som objekt så den kan tilgåes, den sættes uden for get-metoden så der ikke oprettes en ny chache hver eneste gang.
+  private static ProductCache productCache = new ProductCache();
+
   /** @return Responses */
   @GET
   @Path("/")
   public Response getProducts() {
 
-    //---Tilføjer productchache som objekt så den kan tilgåes
-    //ProductCache productCache = new ProductCache();
     // Call our controller-layer in order to get the order from the DB
     //--- ændret til productcache istedet for productcontroller så arraylisten hentes fra chachen
-    ArrayList<Product> products = ProductController.getProducts();
+    ArrayList<Product> products = productCache.getProducts(false);
 
     // TODO: Add Encryption to JSON: Fixed tjek efter
     // We convert the java object to json with GSON library imported in Maven

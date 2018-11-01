@@ -4,11 +4,12 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.bouncycastle.util.encoders.Hex;
+import model.User;
 
 public final class Hashing {
 
   //Opretter salt
-  private String salt="saltet";
+  private String salt="salt";
 
   // TODO: You should add a salt and make this secure: Fixed tjek efter
   public static String md5(String rawString) {
@@ -61,10 +62,21 @@ public final class Hashing {
 
     return rawString;
   }
-
+  //--- Der oprettes en metode for hvert objekt i databasen, bortset fra address og line_item
   //--- Opretter metode til at kombinere hashing og salt, den returnere så md5(salt), dvs. hasher salt vores nye varible
-  public String hashwithsaltet(String str){
+  public String OrderHashWithSalt(String str) {
+    String salt = str + this.salt;
+    return md5(salt);
+  }
+  //--- Opretter metode til at kombinere hashing og salt, den returnere så md5(salt), dvs. hasher salt vores nye varible
+  public String ProductHashWithSalt(String str){
     String salt = str+this.salt;
     return md5(salt);
   }
+  //--- Opretter metode til at kombinere hashing og salt, den returnere så md5(salt), dvs. hasher salt vores nye varible
+  public String UserHashWithSalt(String str){
+    String salt = str+this.salt;
+    return md5(salt);
+  }
+
 }

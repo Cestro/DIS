@@ -117,7 +117,7 @@ public class UserController {
             + "', '"
             + user.getLastname()
             + "', '"
-            + hashing.hashwithsaltet(user.getPassword()) //---benytter hashing metoden inden password hentes.
+            + hashing.UserHashWithSalt(user.getPassword()) //---benytter hashing metoden inden password hentes.
             + "', '"
             + user.getEmail()
             + "', "
