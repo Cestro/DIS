@@ -21,8 +21,15 @@ public final class Config {
   private static String SOLR_PATH;
   private static String SOLR_CORE;
   private static long PRODUCT_TTL;
+  //---Tilføjer ORDER_TTL & USER_TTL, for at give cachen en levetid
+  private static long ORDER_TTL;
+  private static long USER_TTL;
   //---Tilføjer encryption_key så den kan hentes fra config.json
   private static String ENCRYPTION_KEY;
+
+  //---Gør det muligt at tilgå de nye TTL'er
+  public static long getOrderTtl(){return ORDER_TTL;}
+  public static long getUserTtl(){return USER_TTL;}
 
   //---gør det muligt at tilgå encryption key'en
   public static char[] getEncryptionKey () {return ENCRYPTION_KEY.toCharArray();}
