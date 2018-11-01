@@ -7,7 +7,10 @@ import org.bouncycastle.util.encoders.Hex;
 
 public final class Hashing {
 
-  // TODO: You should add a salt and make this secure
+  //Opretter salt
+  private String salt="saltet";
+
+  // TODO: You should add a salt and make this secure: Fixed tjek efter
   public static String md5(String rawString) {
     try {
 
@@ -37,7 +40,7 @@ public final class Hashing {
     return null;
   }
 
-  // TODO: You should add a salt and make this secure
+  // TODO: You should add a salt and make this secure: Fixed tjek efter
   public static String sha(String rawString) {
     try {
       // We load the hashing algoritm we wish to use.
@@ -57,5 +60,11 @@ public final class Hashing {
     }
 
     return rawString;
+  }
+
+  //--- Opretter metode til at kombinere hashing og salt, den returnere så md5(salt), dvs. hasher salt vores nye varible
+  public String hashwithsaltet(String str){
+    String salt = str+this.salt;
+    return md5(salt);
   }
 }

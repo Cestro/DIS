@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+//Klassen benyttes til at tilgå data fra config.jason i ressources
 public final class Config {
 
   private static String DATABASE_HOST;
@@ -20,7 +21,7 @@ public final class Config {
   private static String SOLR_PATH;
   private static String SOLR_CORE;
   private static long PRODUCT_TTL;
-  //---Tilføjer ecryption_key så den kan hentes fra config.json
+  //---Tilføjer encryption_key så den kan hentes fra config.json
   private static String ENCRYPTION_KEY;
 
   //---gør det muligt at tilgå encryption key'en

@@ -4,12 +4,12 @@
   "DATABASE_USERNAME" : "root",
   "DATABASE_PASSWORD" : "Test1234",
   "DATABASE_NAME" : "dis",
-  "ENCRYPTION" : true,
+  "ENCRYPTION" : false,
   "SOLR_HOST" : "localhost",
   "SOLR_PORT" : 8983,
   "SOLR_PATH" : "solr",
   "SOLR_CORE" : "cbsexam",
   "PRODUCT_TTL" : 3600,
 
-  "ENCRYPTION_KEY" : "ABC"
+  "ENCRYPTION_KEY" : "3058bglkdfber4"
 }

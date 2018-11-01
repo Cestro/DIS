@@ -28,9 +28,12 @@ public class UserEndpoints {
     // Use the ID to get the user from the controller.
     User user = UserController.getUser(idUser);
 
-    // TODO: Add Encryption to JSON
+    // TODO: Add Encryption to JSON: Fixed tjek efter
     // Convert the user object to json in order to return the object
     String json = new Gson().toJson(user);
+
+    //--------encryption er klassens navn og encryptDecrypt... er metoden er benyttes.
+    json = Encryption.encryptDecryptXOR(json);
 
     // Return the user with the status code 200
     // TODO: What should happen if something breaks down?
@@ -48,7 +51,7 @@ public class UserEndpoints {
     // Get a list of users
     ArrayList<User> users = UserController.getUsers();
 
-    // TODO: Add Encryption to JSON
+    // TODO: Add Encryption to JSON: Fixed tjek efter
     // Transfer users to json in order to return it to the user
     String json = new Gson().toJson(users);
 
