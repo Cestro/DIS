@@ -1,5 +1,6 @@
 package com.cbsexam;
 
+import cache.UserCache;
 import com.google.gson.Gson;
 import controllers.UserController;
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ public class UserEndpoints {
     return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
   }
 
+  //---Tilføjer productchache som objekt så den kan tilgåes, den sættes uden for get-metoden så der ikke oprettes en ny chache hver eneste gang.
+  private static UserCache userCache = new UserCache();
+
   /** @return Responses */
   @GET
   @Path("/")
@@ -49,7 +53,8 @@ public class UserEndpoints {
     Log.writeLog(this.getClass().getName(), this, "Get all users", 0);
 
     // Get a list of users
-    ArrayList<User> users = UserController.getUsers();
+    //--- Calling from the chache in order to minimize the times needed to ping the DB
+    ArrayList<User> users = userCache.getUsers(false);
 
     // TODO: Add Encryption to JSON: Fixed tjek efter
     // Transfer users to json in order to return it to the user

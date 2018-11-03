@@ -1,5 +1,6 @@
 package com.cbsexam;
 
+import cache.OrderCache;
 import com.google.gson.Gson;
 import controllers.OrderController;
 import java.util.ArrayList;
@@ -38,13 +39,17 @@ public class OrderEndpoints {
     return Response.status(200).type(MediaType.APPLICATION_JSON).entity(json).build();
   }
 
+  //---Tilføjer productchache som objekt så den kan tilgåes, den sættes uden for get-metoden så der ikke oprettes en ny chache hver eneste gang.
+  private static OrderCache orderCache = new OrderCache();
+
   /** @return Responses */
   @GET
   @Path("/")
   public Response getOrders() {
 
     // Call our controller-layer in order to get the order from the DB
-    ArrayList<Order> orders = OrderController.getOrders();
+    //--- Calling from the chache in order to minimize the times needed to ping the DB
+    ArrayList<Order> orders = orderCache.getOrders(false);
 
     // TODO: Add Encryption to JSON: Fixed tjek efter
     // We convert the java object to json with GSON library imported in Maven
