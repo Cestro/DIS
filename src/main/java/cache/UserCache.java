@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import model.User;
 import utils.Config;
 
-//TODO: Build this cache and use it.
+//TODO: Build this cache and use it. Fixed tjek efter
 public class UserCache {
     // List of orders
     private ArrayList<User> users;
