@@ -144,4 +144,14 @@ public class UserController {
     String sql = "DELETE FROM user WHERE id=" + id;
     dbCon.deleteUser(sql);
   }
+
+  public static void updateUSer (int id, User updates){
+    if (dbCon == null){
+      dbCon = new DatabaseController();
+    }
+
+    String sql = "Update user set first_name = ' " + updates.getFirstname() + "', last_name ='" + updates.getLastname() + "', Email =' " + updates.getEmail() + "' Where id = " + id;
+    dbCon.updateUser(sql);
+  }
+
 }

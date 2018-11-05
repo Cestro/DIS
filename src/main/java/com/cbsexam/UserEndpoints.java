@@ -18,6 +18,9 @@ import utils.Log;
 @Path("user")
 public class UserEndpoints {
 
+  //---Tilføjer productchache som objekt så den kan tilgåes, den sættes uden for get-metoden så der ikke oprettes en ny chache hver eneste gang.
+  public static UserCache userCache = new UserCache();
+
   /**
    * @param idUser
    * @return Responses
@@ -40,9 +43,6 @@ public class UserEndpoints {
     // TODO: What should happen if something breaks down?
     return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
   }
-
-  //---Tilføjer productchache som objekt så den kan tilgåes, den sættes uden for get-metoden så der ikke oprettes en ny chache hver eneste gang.
-  private static UserCache userCache = new UserCache();
 
   /** @return Responses */
   @GET
@@ -100,8 +100,6 @@ public class UserEndpoints {
     return Response.status(400).entity("Endpoint not implemented yet").build();
   }
 
-  private static UserCache userCache = new UserCache();
-
   @POST
   @Path("/{delete}")
   @Consumes(MediaType.APPLICATION_JSON)
@@ -112,18 +110,46 @@ public class UserEndpoints {
 
     //!=0 sikre det altid er et positivt tal.
     if(idToDelete!=0){
+      // Sørger for at serveren opdatere efter der laves en ændring.
+      userCache.getUsers(true);
       return Response.status(200).entity("The chosen user " + idToDelete + " has now been deleted").build();
-      UserCache.getUsers(true);
+      }
+
+    else {
+      // Return a response with status 400 and JSON as type
+      //---Status 400 betyder at dataen fra klienten til serveren ikke overholdte reglerne og en fejlmeddelse vises.
+      return Response.status(400).entity("An error occured in connection to the deletion of a user").build();
     }
 
-    else
-    // Return a response with status 400 and JSON as type
-    //---Status 400 betyder at dataen fra klienten til serveren ikke overholdte reglerne og en fejlmeddelse vises.
-    return Response.status(400).entity("An error occured in connection to the deletion of a user").build();
   }
 
   // TODO: Make the system able to update users
-  public Response updateUser(String x) {
+  @POST
+  @Path("/{update}")
+  public Response updateUser(@PathParam("update") int idToUpdate, String body) {
+
+    User updates = new Gson().fromJson(body, User.class);
+
+    User currentuser = UserController.getUser(idToUpdate);
+
+    if (updates.getFirstname() == null){
+      updates.setFirstname(currentuser.getFirstname());
+    }
+
+    if (updates.getLastname() == null){
+      updates.setLastname(currentuser.getLastname());
+    }
+
+    if (updates.getEmail() == null){
+      updates.setEmail(currentuser.getEmail());
+    }
+
+    UserController.updateUSer(idToUpdate, updates);
+
+    if (idToUpdate !=0){
+      return Response.status(200).entity("User with id: " + idToUpdate + " is now updated").build();
+    }
+    else Response.status(400).entity("Something went wrong, not able to update user");
 
     // Return a response with status 200 and JSON as type
     return Response.status(400).entity("Endpoint not implemented yet").build();

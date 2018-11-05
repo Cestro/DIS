@@ -116,7 +116,7 @@ public final class Config {
     SOLR_CORE = json.get("SOLR_CORE").toString().replace("\"", "");
     PRODUCT_TTL = json.get("PRODUCT_TTL").getAsLong();
     USER_TTL = json.get("USER_TTL").getAsLong();
-    ORDER_TTL = json.get("ODER_TTL").getAsLong();
+    ORDER_TTL = json.get("ORDER_TTL").getAsLong();
     ENCRYPTION_KEY = json.get("ENCRYPTION_KEY").toString().replace("\"", "");
     SALT_KEY = json.get("SALT_KEY").toString().replace("\"","");
 
