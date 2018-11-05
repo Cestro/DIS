@@ -26,6 +26,9 @@ public final class Config {
   private static long USER_TTL;
   //---Tilføjer encryption_key så den kan hentes fra config.json
   private static String ENCRYPTION_KEY;
+  private static String SALT_KEY;
+
+  public static String getSaltKey(){return SALT_KEY;}
 
   //---Gør det muligt at tilgå de nye TTL'er
   public static long getOrderTtl(){return ORDER_TTL;}
@@ -112,6 +115,10 @@ public final class Config {
     SOLR_PATH = json.get("SOLR_PATH").toString().replace("\"", "");
     SOLR_CORE = json.get("SOLR_CORE").toString().replace("\"", "");
     PRODUCT_TTL = json.get("PRODUCT_TTL").getAsLong();
+    USER_TTL = json.get("USER_TTL").getAsLong();
+    ORDER_TTL = json.get("ODER_TTL").getAsLong();
     ENCRYPTION_KEY = json.get("ENCRYPTION_KEY").toString().replace("\"", "");
+    SALT_KEY = json.get("SALT_KEY").toString().replace("\"","");
+
   }
 }

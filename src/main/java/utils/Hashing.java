@@ -5,11 +5,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.bouncycastle.util.encoders.Hex;
 import model.User;
+import utils.Config;
 
 public final class Hashing {
 
   //Opretter salt
-  private String salt="salt";
+  private String salt = Config.getSaltKey();
 
   // TODO: You should add a salt and make this secure: Fixed tjek efter
   public static String md5(String rawString) {

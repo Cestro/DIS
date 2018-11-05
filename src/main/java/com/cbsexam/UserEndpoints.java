@@ -100,8 +100,10 @@ public class UserEndpoints {
     return Response.status(400).entity("Endpoint not implemented yet").build();
   }
 
+  private static UserCache userCache = new UserCache();
+
   @POST
-  @Path("/delete/{delete}")
+  @Path("/{delete}")
   @Consumes(MediaType.APPLICATION_JSON)
   // TODO: Make the system able to delete users: Fixed, tjek efter.
   public Response deleteUser(@PathParam("delete") int idToDelete) {
@@ -110,12 +112,14 @@ public class UserEndpoints {
 
     //!=0 sikre det altid er et positivt tal.
     if(idToDelete!=0){
-      return Response.status(200).entity("The chosen user " + idToDelete + "has now been deleted").build();
+      return Response.status(200).entity("The chosen user " + idToDelete + " has now been deleted").build();
+      UserCache.getUsers(true);
     }
 
     else
-    // Return a response with status 200 and JSON as type
-    return Response.status(400).entity("Find ud af hvad fejl 400 gør").build();
+    // Return a response with status 400 and JSON as type
+    //---Status 400 betyder at dataen fra klienten til serveren ikke overholdte reglerne og en fejlmeddelse vises.
+    return Response.status(400).entity("An error occured in connection to the deletion of a user").build();
   }
 
   // TODO: Make the system able to update users
