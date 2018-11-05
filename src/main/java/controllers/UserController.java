@@ -135,4 +135,13 @@ public class UserController {
     // Return user
     return user;
   }
+  //hvorfor void?
+  public static void deleteUser(int id){
+    if (dbCon == null) {
+      dbCon = new DatabaseController();
+    }
+
+    String sql = "DELETE FROM user WHERE id=" + id;
+    dbCon.deleteUser(sql);
+  }
 }

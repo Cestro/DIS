@@ -100,11 +100,22 @@ public class UserEndpoints {
     return Response.status(400).entity("Endpoint not implemented yet").build();
   }
 
-  // TODO: Make the system able to delete users
-  public Response deleteUser(String x) {
+  @POST
+  @Path("/delete/{delete}")
+  @Consumes(MediaType.APPLICATION_JSON)
+  // TODO: Make the system able to delete users: Fixed, tjek efter.
+  public Response deleteUser(@PathParam("delete") int idToDelete) {
 
+    UserController.deleteUser(idToDelete);
+
+    //!=0 sikre det altid er et positivt tal.
+    if(idToDelete!=0){
+      return Response.status(200).entity("The chosen user " + idToDelete + "has now been deleted").build();
+    }
+
+    else
     // Return a response with status 200 and JSON as type
-    return Response.status(400).entity("Endpoint not implemented yet").build();
+    return Response.status(400).entity("Find ud af hvad fejl 400 gør").build();
   }
 
   // TODO: Make the system able to update users
