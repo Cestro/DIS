@@ -3,11 +3,17 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import cache.OrderCache;
+import cache.OrderCache;
+import com.mysql.cj.jdbc.ha.LoadBalancedAutoCommitInterceptor;
 import model.Address;
 import model.LineItem;
 import model.Order;
 import model.User;
 import utils.Log;
+
+import javax.xml.crypto.Data;
+import javax.xml.ws.Response;
 
 public class OrderController {
 
@@ -128,46 +134,76 @@ public class OrderController {
       dbCon = new DatabaseController();
     }
 
-    // Save addresses to database and save them back to initial order instance
-    order.setBillingAddress(AddressController.createAddress(order.getBillingAddress()));
-    order.setShippingAddress(AddressController.createAddress(order.getShippingAddress()));
+    try {
+      DatabaseController.getConnection().setAutoCommit(true);
+      //---LoadBalancedAutoCommitInterceptor?
+      // Save addresses to database and save them back to initial order instance
+      order.setBillingAddress(AddressController.createAddress(order.getBillingAddress()));
+      order.setShippingAddress(AddressController.createAddress(order.getShippingAddress()));
 
-    // Save the user to the database and save them back to initial order instance
-    order.setCustomer(UserController.createUser(order.getCustomer()));
+      // Save the user to the database and save them back to initial order instance
+      order.setCustomer(UserController.createUser(order.getCustomer()));
 
-    // TODO: Enable transactions in order for us to not save the order if somethings fails for some of the other inserts.
+      // TODO: Enable transactions in order for us to not save the order if somethings fails for some of the other inserts.
 
-    // Insert the product in the DB
-    int orderID = dbCon.insert(
-        "INSERT INTO orders(user_id, billing_address_id, shipping_address_id, order_total, created_at, updated_at) VALUES("
-            + order.getCustomer().getId()
-            + ", "
-            + order.getBillingAddress().getId()
-            + ", "
-            + order.getShippingAddress().getId()
-            + ", "
-            + order.calculateOrderTotal()
-            + ", "
-            + order.getCreatedAt()
-            + ", "
-            + order.getUpdatedAt()
-            + ")");
+      // Insert the product in the DB
+      int orderID = dbCon.insert(
+              "INSERT INTO orders(user_id, billing_address_id, shipping_address_id, order_total, created_at, updated_at) VALUES("
+                      + order.getCustomer().getId()
+                      + ", "
+                      + order.getBillingAddress().getId()
+                      + ", "
+                      + order.getShippingAddress().getId()
+                      + ", "
+                      + order.calculateOrderTotal()
+                      + ", "
+                      + order.getCreatedAt()
+                      + ", "
+                      + order.getUpdatedAt()
+                      + ")");
 
-    if (orderID != 0) {
-      //Update the productid of the product before returning
-      order.setId(orderID);
+      if (orderID != 0) {
+        //Update the productid of the product before returning
+        order.setId(orderID);
+      }
+      /*if (true) {
+
+        throw new SQLException();
+      }*/
+
+      // Create an empty list in order to go trough items and then save them back with ID
+      ArrayList<LineItem> items = new ArrayList<LineItem>();
+
+      // Save line items to database
+      for(LineItem item : order.getLineItems()){
+        item = LineItemController.createLineItem(item, order.getId());
+        items.add(item);
+        //Fordi autoCommit er slået fra er det nødvendigt at tvinge et commit for at gemme det til DB.
+        DatabaseController.getConnection().commit();
+      }
+
+      order.setLineItems(items);
+
+      Log.writeLog(OrderController.class.getName(), order, "The order has been created", 0);
+
+    } catch (SQLException e) {
+      try {
+        DatabaseController.getConnection().rollback();
+      } catch (SQLException e1) {
+        e1.printStackTrace();
+      }
+      Log.writeLog(OrderController.class.getName(), order, "Something went wrong", 0);
+
+    } finally {
+
+
+      try {
+        DatabaseController.getConnection().setAutoCommit(true);
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+
     }
-
-    // Create an empty list in order to go trough items and then save them back with ID
-    ArrayList<LineItem> items = new ArrayList<LineItem>();
-
-    // Save line items to database
-    for(LineItem item : order.getLineItems()){
-      item = LineItemController.createLineItem(item, order.getId());
-      items.add(item);
-    }
-
-    order.setLineItems(items);
 
     // Return order
     return order;

@@ -36,12 +36,18 @@ public class UserEndpoints {
     // Convert the user object to json in order to return the object
     String json = new Gson().toJson(user);
 
-    //--------encryption er klassens navn og encryptDecrypt... er metoden er benyttes.
+    //---encryption er klassens navn og encryptDecrypt... er metoden er benyttes.
     json = Encryption.encryptDecryptXOR(json);
 
     // Return the user with the status code 200
     // TODO: What should happen if something breaks down?
-    return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
+    if (user != null) {
+      return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity("The user id: " + idUser + " have been found").build();
+    }
+    else {
+      return Response.status(400).type(MediaType.APPLICATION_JSON_TYPE).entity("The user id: " + idUser + " does not exist").build();
+    }
+
   }
 
   /** @return Responses */
@@ -53,14 +59,14 @@ public class UserEndpoints {
     Log.writeLog(this.getClass().getName(), this, "Get all users", 0);
 
     // Get a list of users
-    //--- Calling from the chache in order to minimize the times needed to ping the DB
+    //---Calling from the chache in order to minimize the times needed to ping the DB
     ArrayList<User> users = userCache.getUsers(false);
 
     // TODO: Add Encryption to JSON: Fixed tjek efter
     // Transfer users to json in order to return it to the user
     String json = new Gson().toJson(users);
 
-    //--------encryption er klassens navn og encryptDecrypt... er metoden er benyttes.
+    //---encryption er klassens navn og encryptDecrypt... er metoden er benyttes.
     json = Encryption.encryptDecryptXOR(json);
 
     // Return the users with the status code 200
@@ -101,7 +107,7 @@ public class UserEndpoints {
   }
 
   @POST
-  @Path("/{delete}")
+  @Path("/delete/{delete}")
   @Consumes(MediaType.APPLICATION_JSON)
   // TODO: Make the system able to delete users: Fixed, tjek efter.
   public Response deleteUser(@PathParam("delete") int idToDelete) {
@@ -123,9 +129,9 @@ public class UserEndpoints {
 
   }
 
-  // TODO: Make the system able to update users
+  // TODO: Make the system able to update users: Fixed, tjek efter
   @POST
-  @Path("/{update}")
+  @Path("update/{update}")
   public Response updateUser(@PathParam("update") int idToUpdate, String body) {
 
     User updates = new Gson().fromJson(body, User.class);
@@ -147,10 +153,15 @@ public class UserEndpoints {
     UserController.updateUSer(idToUpdate, updates);
 
     if (idToUpdate !=0){
+      userCache.getUsers(true);
       return Response.status(200).entity("User with id: " + idToUpdate + " is now updated").build();
     }
-    else Response.status(400).entity("Something went wrong, not able to update user");
-
+    else {
+      //400 = fejl, 200 = godt
+      // API udsteder endpoints
+      //
+      Response.status(400).entity("Something went wrong, not able to update user");
+    }
     // Return a response with status 200 and JSON as type
     return Response.status(400).entity("Endpoint not implemented yet").build();
   }
