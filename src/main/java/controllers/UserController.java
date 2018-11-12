@@ -33,12 +33,12 @@ public class UserController {
       // Get first object, since we only have one
       if (rs.next()) {
         user =
-            new User(
-                rs.getInt("id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getString("password"),
-                rs.getString("email"));
+                new User(
+                        rs.getInt("id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("password"),
+                        rs.getString("email"));
 
         // return the create object
         return user;
@@ -76,12 +76,12 @@ public class UserController {
       // Loop through DB Data
       while (rs.next()) {
         User user =
-            new User(
-                rs.getInt("id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getString("password"),
-                rs.getString("email"));
+                new User(
+                        rs.getInt("id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("password"),
+                        rs.getString("email"));
 
         // Add element to list
         users.add(user);
@@ -112,22 +112,22 @@ public class UserController {
     // Insert the user in the DB
     // TODO: Hash the user password before saving it.: Fixed tjek efter
     int userID = dbCon.insert(
-        "INSERT INTO user(first_name, last_name, password, email, created_at) VALUES('"
-            + user.getFirstname()
-            + "', '"
-            + user.getLastname()
-            + "', '"
-            + hashing.UserHashWithSalt(user.getPassword()) //---benytter hashing metoden inden password hentes.
-            + "', '"
-            + user.getEmail()
-            + "', "
-            + user.getCreatedTime()
-            + ")");
+            "INSERT INTO user(first_name, last_name, password, email, created_at) VALUES('"
+                    + user.getFirstname()
+                    + "', '"
+                    + user.getLastname()
+                    + "', '"
+                    + hashing.UserHashWithSalt(user.getPassword()) //---benytter hashing metoden inden password hentes.
+                    + "', '"
+                    + user.getEmail()
+                    + "', "
+                    + user.getCreatedTime()
+                    + ")");
 
     if (userID != 0) {
       //Update the userid of the user before returning
       user.setId(userID);
-    } else{
+    } else {
       // Return null if user has not been inserted into database
       return null;
     }
@@ -135,8 +135,9 @@ public class UserController {
     // Return user
     return user;
   }
+
   //hvorfor void?
-  public static void deleteUser(int id){
+  public static void deleteUser(int id) {
     if (dbCon == null) {
       dbCon = new DatabaseController();
     }
@@ -145,13 +146,44 @@ public class UserController {
     dbCon.deleteUser(sql);
   }
 
-  public static void updateUSer (int id, User updates){
-    if (dbCon == null){
+  public static void updateUSer(int id, User updates) {
+    if (dbCon == null) {
       dbCon = new DatabaseController();
     }
 
     String sql = "Update user set first_name = ' " + updates.getFirstname() + "', last_name ='" + updates.getLastname() + "', Email =' " + updates.getEmail() + "' Where id = " + id;
     dbCon.updateUser(sql);
+  }
+
+  public static User AuthUser(String email, String password) {
+    if (dbCon == null) {
+      dbCon = new DatabaseController();
+    }
+    // Build SQL
+    String sql = "SELECT * FROM user where='" + email + "' AND password'" + password + "'";
+
+    // Do the query and initialyze an empty list for use if we don't get results
+    ResultSet rs = dbCon.query(sql);
+    //ArrayList<User> users = new ArrayList<User>();
+    User user = null;
+
+    try {
+      if (rs.next()) {
+        user = new User(
+                rs.getInt("id"),
+                rs.getString("First_name"),
+                rs.getString("Last_name"),
+                rs.getString("password"),
+                rs.getString("email"));
+        return user;
+      } else {
+        System.out.println("No user found");
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
 }

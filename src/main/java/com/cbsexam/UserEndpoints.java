@@ -1,7 +1,11 @@
 package com.cbsexam;
 
 import cache.UserCache;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
 import com.google.gson.Gson;
+import controllers.DatabaseController;
 import controllers.UserController;
 import java.util.ArrayList;
 import javax.ws.rs.Consumes;
@@ -14,6 +18,9 @@ import javax.ws.rs.core.Response;
 import model.User;
 import utils.Encryption;
 import utils.Log;
+import utils.Hashing;
+
+
 
 @Path("user")
 public class UserEndpoints {
@@ -89,6 +96,8 @@ public class UserEndpoints {
 
     // Return the data to the user
     if (createUser != null) {
+      // Sørger for at serveren opdatere efter der laves en ændring.
+      userCache.getUsers(true);
       // Return a response with status 200 and JSON as type
       return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
     } else {
@@ -100,10 +109,28 @@ public class UserEndpoints {
   @POST
   @Path("/login")
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response loginUser(String x) {
+  public Response loginUser(String UserBody) {
 
-    // Return a response with status 200 and JSON as type
-    return Response.status(400).entity("Endpoint not implemented yet").build();
+    Hashing hashing = new Hashing();
+    User userData = new Gson().fromJson(UserBody, User.class);
+    User userLogin = UserController.AuthUser(userData.getEmail(), userData.getPassword());
+    String json = new Gson().toJson(userLogin);
+
+    if (userData.getEmail().equals(equals(userLogin.getEmail()) && hashing.UserHashWithSalt(userData.getPassword()).equals(userLogin.getPassword()))){
+//lav egen algoritme, alle user data plus currenttimemillis ved login
+      try {
+        Algorithm algorithm = Algorithm.HMAC256("secret");
+        String token = JWT.create()
+                .withIssuer("auth0")
+                .sign(algorithm);
+      } catch (JWTCreationException exception){
+        //Invalid Signing configuration / Couldn't convert Claims.
+      }
+
+      //return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(token).build();
+    }
+    // Return a response with status 400 and JSON as type
+    return Response.status(400).entity("Email or password was wrong or didn't match").build();
   }
 
   @POST
@@ -166,3 +193,5 @@ public class UserEndpoints {
     return Response.status(400).entity("Endpoint not implemented yet").build();
   }
 }
+
+
