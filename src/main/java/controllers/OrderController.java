@@ -90,7 +90,7 @@ public class OrderController {
     try {
       while(rs.next()) {
 
-        // Perhaps we could optimize things a bit here and get rid of nested queries.
+        //TODO: Perhaps we could optimize things a bit here and get rid of nested queries.
         User user = UserController.getUser(rs.getInt("user_id"));
         ArrayList<LineItem> lineItems = LineItemController.getLineItemsForOrder(rs.getInt("id"));
         Address billingAddress = AddressController.getAddress(rs.getInt("billing_address_id"));
@@ -135,7 +135,7 @@ public class OrderController {
     }
 
     try {
-      DatabaseController.getConnection().setAutoCommit(true);
+      DatabaseController.getConnection().setAutoCommit(false);
       //---LoadBalancedAutoCommitInterceptor?
       // Save addresses to database and save them back to initial order instance
       order.setBillingAddress(AddressController.createAddress(order.getBillingAddress()));

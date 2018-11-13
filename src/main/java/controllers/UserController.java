@@ -3,11 +3,16 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import cache.UserCache;
 import model.User;
+import org.apache.solr.common.util.Hash;
 import utils.Hashing;
 import utils.Log;
 
 public class UserController {
+
+  public static Hashing hashing = new Hashing(); //---tilføjer nyt objekt som giver adgang til hashing klassen
 
   private static DatabaseController dbCon;
 
@@ -38,7 +43,9 @@ public class UserController {
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         rs.getString("password"),
-                        rs.getString("email"));
+                        rs.getString("email"),
+                        rs.getLong("created_at"),
+                        rs.getString("token"));
 
         // return the create object
         return user;
@@ -81,7 +88,9 @@ public class UserController {
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         rs.getString("password"),
-                        rs.getString("email"));
+                        rs.getString("email"),
+                        rs.getLong("created_at"),
+                        rs.getString("token"));
 
         // Add element to list
         users.add(user);
@@ -96,7 +105,7 @@ public class UserController {
 
   public static User createUser(User user) {
 
-    Hashing hashing = new Hashing(); //---tilføjer nyt objekt som giver adgang til hashing klassen
+
 
     // Write in log that we've reach this step
     Log.writeLog(UserController.class.getName(), user, "Actually creating a user in DB", 0);
@@ -117,7 +126,7 @@ public class UserController {
                     + "', '"
                     + user.getLastname()
                     + "', '"
-                    + hashing.UserHashWithSalt(user.getPassword()) //---benytter hashing metoden inden password hentes.
+                    + hashing.LoginHashWithSalt(user.getPassword()) //---benytter hashing metoden inden password hentes.
                     + "', '"
                     + user.getEmail()
                     + "', "
@@ -155,8 +164,35 @@ public class UserController {
     dbCon.updateUser(sql);
   }
 
-  public static User AuthUser(String email, String password) {
-    if (dbCon == null) {
+  public static String AuthUser(User userlogin) {
+
+    ArrayList<User> allTheUsers = UserController.getUsers();//cache istedet
+
+    for (User user : allTheUsers) {
+      if (user.getEmail().equals(userlogin.getEmail())){
+
+        hashing.LoginHashWithSalt(String.valueOf(user.getCreatedTime()));
+
+        String password = hashing.LoginHashWithSalt(userlogin.getPassword());
+
+        if (password.equals(user.getPassword())){
+
+          hashing.setLoginSalt(String.valueOf(System.currentTimeMillis() / 100L));
+
+          String token = user.getFirstname()+user.getLastname()+user.getEmail();
+
+          token = hashing.LoginHashWithSalt(token);
+
+          updateToken(user.id,token);
+
+          return token;
+
+        }
+      }
+    }
+    return null;
+
+/*    if (dbCon == null) {
       dbCon = new DatabaseController();
     }
     // Build SQL
@@ -184,6 +220,45 @@ public class UserController {
       e.printStackTrace();
     }
     return null;
+    */
   }
 
+  /*public static String login(User userLogin) {
+
+    ArrayList<User> alltheusers = UserController.getUsers(); //brug cache i stedet
+    for (User user : alltheusers) {
+      if (user.getEmail().equals(userLogin.getEmail()))
+
+        hashing.setLoginSalt(String.valueOf(user.getCreatedTime()));
+
+        String password = hashing.UserHashWithSalt(userLogin.getPassword());
+
+      if (password.equals(user.getPassword())) {
+
+        //String token = ;
+        hashing.setLoginSalt(String.valueOf(System.currentTimeMillis() / 100L));
+
+         = hashing.UserHashWithSalt(token);
+
+        //updateToken(user.id,token);
+
+        return token;
+      }
+    }
+    return null;
+  }*/
+
+  public static void updateToken (int id, String token){
+
+    Log.writeLog(UserController.class.getName(), token, "updating token in database", 0);
+
+    if (dbCon == null){
+      dbCon = new DatabaseController();
+    }
+
+    String sql = "UPDATE dis.user SET token = '" + token + "' where id= " + id;
+
+    dbCon.voidToDB(sql);
+
+  }
 }

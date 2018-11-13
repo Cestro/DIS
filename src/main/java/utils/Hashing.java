@@ -3,6 +3,9 @@ package utils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.JWTCreationException;
 import org.bouncycastle.util.encoders.Hex;
 import model.User;
 import utils.Config;
@@ -11,6 +14,9 @@ public final class Hashing {
 
   //Opretter salt
   private String salt = Config.getSaltKey();
+  private String loginSalt = null;
+
+  public void setLoginSalt (String loginSalt) {this.loginSalt = loginSalt;}
 
   // TODO: You should add a salt and make this secure: Fixed tjek efter
   public static String md5(String rawString) {
@@ -79,5 +85,21 @@ public final class Hashing {
     String salt = str+this.salt;
     return md5(salt);
   }
+
+  public String LoginHashWithSalt(String str){
+    String salt = str+this.loginSalt;
+    return md5(salt);
+  }
+  /*public String Token (String str){
+    try {
+      String algorithm = ("");
+      String token = JWT.create()
+              .withIssuer("auth0")
+              .sign(algorithm);
+    } catch (JWTCreationException exception){
+      //Invalid Signing configuration / Couldn't convert Claims.
+    }
+    return null;
+  }*/
 
 }

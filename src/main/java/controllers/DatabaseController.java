@@ -140,4 +140,23 @@ public class DatabaseController {
       System.out.println(e.getMessage());
     }
   }
+
+  public void voidToDB(String sql){
+
+    if (connection == null){
+      connection = getConnection();
+    }
+
+    //execute og opdater databasen
+    try{
+      PreparedStatement securedstatement = connection.prepareStatement(sql);
+
+      securedstatement.executeUpdate();
+
+    } catch (SQLException e){
+      System.out.println(e.getMessage());
+    }
+
+  }
+
 }

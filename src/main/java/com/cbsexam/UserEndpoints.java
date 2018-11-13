@@ -70,11 +70,25 @@ public class UserEndpoints {
     ArrayList<User> users = userCache.getUsers(false);
 
     // TODO: Add Encryption to JSON: Fixed tjek efter
+
+    boolean check = true;
+
+    for (User user : users){
+      String token = null;
+      if (user.getToken() != null && user.getToken().equals(token)){
+
+        check = false;
+      }
+      //sætter token til null så de ikke bliver udskrevet.
+      user.setToken(null);
+    }
+
     // Transfer users to json in order to return it to the user
     String json = new Gson().toJson(users);
-
-    //---encryption er klassens navn og encryptDecrypt... er metoden er benyttes.
-    json = Encryption.encryptDecryptXOR(json);
+    if(check){
+      //---encryption er klassens navn og encryptDecrypt... er metoden er benyttes.
+      json = Encryption.encryptDecryptXOR(json);
+    }
 
     // Return the users with the status code 200
     return Response.status(200).type(MediaType.APPLICATION_JSON).entity(json).build();
@@ -111,7 +125,17 @@ public class UserEndpoints {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response loginUser(String UserBody) {
 
-    Hashing hashing = new Hashing();
+    User userlogin = new Gson().fromJson(UserBody, User.class);
+
+    String token = UserController.AuthUser(userlogin);
+
+    if (token != null) {
+      return Response.status(200).entity(token).build();
+    }
+    return Response.status(400).entity("Password or email didn't match").build();
+  }
+
+    /*Hashing hashing = new Hashing();
     User userData = new Gson().fromJson(UserBody, User.class);
     User userLogin = UserController.AuthUser(userData.getEmail(), userData.getPassword());
     String json = new Gson().toJson(userLogin);
@@ -131,29 +155,31 @@ public class UserEndpoints {
     }
     // Return a response with status 400 and JSON as type
     return Response.status(400).entity("Email or password was wrong or didn't match").build();
-  }
+  }*/
 
   @POST
-  @Path("/delete/{delete}")
+  @Path("/delete/{delete}/{token}")
   @Consumes(MediaType.APPLICATION_JSON)
   // TODO: Make the system able to delete users: Fixed, tjek efter.
-  public Response deleteUser(@PathParam("delete") int idToDelete) {
+  public Response deleteUser(@PathParam("delete") int idToDelete, @PathParam("token") String token) {
 
-    UserController.deleteUser(idToDelete);
+    if (UserController.getUser(idToDelete).getToken().equals(token)){
+      UserController.deleteUser(idToDelete);
 
-    //!=0 sikre det altid er et positivt tal.
-    if(idToDelete!=0){
-      // Sørger for at serveren opdatere efter der laves en ændring.
-      userCache.getUsers(true);
-      return Response.status(200).entity("The chosen user " + idToDelete + " has now been deleted").build();
+      //!=0 sikre det altid er et positivt tal.
+      if(idToDelete!=0){
+        // Sørger for at serveren opdatere efter der laves en ændring.
+        userCache.getUsers(true);
+        return Response.status(200).entity("The chosen user " + idToDelete + " has now been deleted").build();
       }
+    }
 
     else {
       // Return a response with status 400 and JSON as type
       //---Status 400 betyder at dataen fra klienten til serveren ikke overholdte reglerne og en fejlmeddelse vises.
       return Response.status(400).entity("An error occured in connection to the deletion of a user").build();
     }
-
+    return Response.status(200).entity(" ").build();
   }
 
   // TODO: Make the system able to update users: Fixed, tjek efter

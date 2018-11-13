@@ -30,6 +30,8 @@ public final class Config {
 
   public static String getSaltKey(){return SALT_KEY;}
 
+  public void setSaltKey(String SALT_KEY){this.SALT_KEY = SALT_KEY;}
+
   //---Gør det muligt at tilgå de nye TTL'er
   public static long getOrderTtl(){return ORDER_TTL;}
   public static long getUserTtl(){return USER_TTL;}
