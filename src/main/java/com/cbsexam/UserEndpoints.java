@@ -1,11 +1,7 @@
 package com.cbsexam;
 
 import cache.UserCache;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
 import com.google.gson.Gson;
-import controllers.DatabaseController;
 import controllers.UserController;
 import java.util.ArrayList;
 import javax.ws.rs.Consumes;
@@ -18,7 +14,6 @@ import javax.ws.rs.core.Response;
 import model.User;
 import utils.Encryption;
 import utils.Log;
-import utils.Hashing;
 
 
 
