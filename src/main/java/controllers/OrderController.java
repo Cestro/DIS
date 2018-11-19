@@ -37,9 +37,10 @@ public class OrderController {
             "FROM orders \n" +
             "LEFT JOIN user ON orders.user_id=user.id \n" +
             "LEFT JOIN address AS billing ON orders.billing_address_id=billing.id \n" +
-            "LEFT JOIN address AS shipping ON orders.shipping_address_id=shipping.id";
+            "LEFT JOIN address AS shipping ON orders.shipping_address_id=shipping.id \n" +
+            "WHERE orders.id=" + id;
 
-    // Do the query in the database and create an empty object for the results
+    // TODO: Do the query in the database and create an empty object for the results FIXED
     ResultSet rs = dbCon.query(sql);
     Order order = null;
 
@@ -126,7 +127,7 @@ public class OrderController {
     try {
       while(rs.next()) {
 
-        //TODO: Perhaps we could optimize things a bit here and get rid of nested queries.
+        //TODO: Perhaps we could optimize things a bit here and get rid of nested queries. FIXED
         User user = new User(
                 rs.getInt("user_id"),
                 rs.getString("first_name"),
