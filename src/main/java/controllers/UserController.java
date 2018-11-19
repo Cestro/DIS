@@ -155,10 +155,25 @@ public class UserController {
     dbCon.deleteUser(sql);
   }
 
-  public static void updateUSer(int id, User updates) {
+  public static void updateUser(int id, User updates) {
     if (dbCon == null) {
       dbCon = new DatabaseController();
     }
+
+    User currentuser = getUser(id);
+
+      if (updates.getFirstname() == null) {
+        updates.setFirstname(currentuser.getFirstname());
+      }
+
+      if (updates.getLastname() == null) {
+        updates.setLastname(currentuser.getLastname());
+      }
+
+      if (updates.getEmail() == null) {
+        updates.setEmail(currentuser.getEmail());
+      }
+
 
     String sql = "Update user set first_name = ' " + updates.getFirstname() + "', last_name ='" + updates.getLastname() + "', Email =' " + updates.getEmail() + "' Where id = " + id;
     dbCon.updateUser(sql);

@@ -2,6 +2,7 @@ package com.cbsexam;
 
 import cache.UserCache;
 import com.google.gson.Gson;
+import com.sun.org.apache.xpath.internal.operations.And;
 import controllers.UserController;
 import java.util.ArrayList;
 import javax.ws.rs.Consumes;
@@ -179,40 +180,28 @@ public class UserEndpoints {
 
   // TODO: Make the system able to update users: Fixed, tjek efter
   @POST
-  @Path("update/{update}")
-  public Response updateUser(@PathParam("update") int idToUpdate, String body) {
+  @Path("update/{token}")
+  public Response updateUser(@PathParam("token") String token,String body) {
 
-    User updates = new Gson().fromJson(body, User.class);
+    ArrayList<User> users = userCache.getUsers(false);
 
-    User currentuser = UserController.getUser(idToUpdate);
+    User UserUpdate = new Gson().fromJson(body, User.class);
 
-    if (updates.getFirstname() == null){
-      updates.setFirstname(currentuser.getFirstname());
+    for (User user : users) {
+      if (user.getToken() != null && user.getToken().equals(token)) {
+        UserController.updateUser(user.getId(), UserUpdate);
+
+        userCache.getUsers(true);
+
+        return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity("User with id: " + user.getId() + " is now updated").build();
+
+      }
     }
 
-    if (updates.getLastname() == null){
-      updates.setLastname(currentuser.getLastname());
-    }
+    return Response.status(400).entity("Something went wrong, not able to update user").build();
 
-    if (updates.getEmail() == null){
-      updates.setEmail(currentuser.getEmail());
-    }
-
-    UserController.updateUSer(idToUpdate, updates);
-
-    if (idToUpdate !=0){
-      userCache.getUsers(true);
-      return Response.status(200).entity("User with id: " + idToUpdate + " is now updated").build();
-    }
-    else {
-      //400 = fejl, 200 = godt
-      // API udsteder endpoints
-      //
-      Response.status(400).entity("Something went wrong, not able to update user");
-    }
-    // Return a response with status 200 and JSON as type
-    return Response.status(400).entity("Endpoint not implemented yet").build();
   }
+
 }
 
 
