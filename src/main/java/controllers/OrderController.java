@@ -3,17 +3,11 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import cache.OrderCache;
-import cache.OrderCache;
-import com.mysql.cj.jdbc.ha.LoadBalancedAutoCommitInterceptor;
 import model.Address;
 import model.LineItem;
 import model.Order;
 import model.User;
 import utils.Log;
-
-import javax.xml.crypto.Data;
-import javax.xml.ws.Response;
 
 public class OrderController {
 
@@ -118,7 +112,8 @@ public class OrderController {
 /*
             "SELECT orders.id, orders.user_id, orders.billing_address_id, \n" +
             "orders.shipping_address_id, user.first_name, user.last_name, user.email,\n" +
-            "address.zipcode, orders.order_total, orders.created_at, orders.updated_at \n" +
+            "billing.zipcode, shipping.zipcode, orders.order_total, orders.created_at,\n" +
+            "orders.updated_at";
 */
 
     ResultSet rs = dbCon.query(sql);
@@ -226,7 +221,6 @@ public class OrderController {
 
       //Smider en fejl for at teste om transaktions virker
       /*if (true) {
-
         throw new SQLException();
       }*/
 
@@ -247,6 +241,7 @@ public class OrderController {
 
     } catch (SQLException e) {
       try {
+          // rollback referer til at databasen vender tilbage til versionen før denne metode er kørt
         DatabaseController.getConnection().rollback();
       } catch (SQLException e1) {
         e1.printStackTrace();
@@ -254,14 +249,11 @@ public class OrderController {
       Log.writeLog(OrderController.class.getName(), order, "Something went wrong", 0);
 
     } finally {
-
-
       try {
         DatabaseController.getConnection().setAutoCommit(true);
       } catch (SQLException e2) {
         e2.printStackTrace();
       }
-
     }
 
     // Return order

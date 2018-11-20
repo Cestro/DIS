@@ -3,8 +3,8 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import cache.UserCache;
+import com.cbsexam.UserEndpoints;
 import model.User;
 import org.apache.solr.common.util.Hash;
 import utils.Hashing;
@@ -98,15 +98,11 @@ public class UserController {
     } catch (SQLException ex) {
       System.out.println(ex.getMessage());
     }
-
     // Return the list of users
     return users;
   }
 
   public static User createUser(User user) {
-
-
-
     // Write in log that we've reach this step
     Log.writeLog(UserController.class.getName(), user, "Actually creating a user in DB", 0);
 
@@ -134,7 +130,7 @@ public class UserController {
                     + ")");
 
     if (userID != 0) {
-      //Update the userid of the user before returning
+      //Update the userID of the user before returning
       user.setId(userID);
     } else {
       // Return null if user has not been inserted into database
@@ -145,7 +141,6 @@ public class UserController {
     return user;
   }
 
-  //hvorfor void?
   public static void deleteUser(int id) {
     if (dbCon == null) {
       dbCon = new DatabaseController();
@@ -181,7 +176,7 @@ public class UserController {
 
   public static String AuthUser(User userlogin) {
 
-    ArrayList<User> allTheUsers = UserController.getUsers();//cache istedet
+    ArrayList<User> allTheUsers = UserEndpoints.userCache.getUsers(false);//cache istedet
 
     for (User user : allTheUsers) {
       if (user.getEmail().equals(userlogin.getEmail())){

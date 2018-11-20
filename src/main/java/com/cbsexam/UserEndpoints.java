@@ -2,7 +2,6 @@ package com.cbsexam;
 
 import cache.UserCache;
 import com.google.gson.Gson;
-import com.sun.org.apache.xpath.internal.operations.And;
 import controllers.UserController;
 import java.util.ArrayList;
 import javax.ws.rs.Consumes;
@@ -43,7 +42,7 @@ public class UserEndpoints {
     json = Encryption.encryptDecryptXOR(json);
 
     // Return the user with the status code 200
-    // TODO: What should happen if something breaks down?
+    // TODO: What should happen if something breaks down? FIXED
     if (user != null) {
       return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity("The user id: " + idUser + " have been found").build();
     }
@@ -115,7 +114,7 @@ public class UserEndpoints {
     }
   }
 
-  // TODO: Make the system able to login users and assign them a token to use throughout the system.
+  // TODO: Make the system able to login users and assign them a token to use throughout the system. FIXED
   @POST
   @Path("/login")
   @Consumes(MediaType.APPLICATION_JSON)

@@ -111,7 +111,6 @@ public class DatabaseController {
     return result;
   }
 
-  //hvorfor ikke static?
   public void deleteUser(String sql){
     if (connection == null) {
       connection = getConnection();
