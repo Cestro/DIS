@@ -103,8 +103,8 @@ public class OrderController {
     }
 
     String sql = "SELECT *, \n" +
-            "billing.street_address as billing, \n" +
-            "shipping.street_address as shipping \n" +
+            "billing.street_address AS billing, \n" +
+            "shipping.street_address AS shipping \n" +
             "FROM orders \n" +
             "LEFT JOIN user ON orders.user_id=user.id \n" +
             "LEFT JOIN address AS billing ON orders.billing_address_id=billing.id \n" +
