@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import model.Order;
 import utils.Config;
 
-//TODO: Build this cache and use it. Fixed check efter
+//TODO: Build this cache and use it. Fixed
 public class OrderCache {
 
     // List of orders

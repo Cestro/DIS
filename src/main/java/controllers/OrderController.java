@@ -122,7 +122,7 @@ public class OrderController {
     try {
       while(rs.next()) {
 
-        //TODO: Perhaps we could optimize things a bit here and get rid of nested queries. FIXED
+        //Unofficial TODO: Perhaps we could optimize things a bit here and get rid of nested queries. FIXED
         User user = new User(
                 rs.getInt("user_id"),
                 rs.getString("first_name"),

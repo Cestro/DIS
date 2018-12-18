@@ -67,6 +67,8 @@ public class ProductEndpoints {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response createProduct(String body) {
 
+    productCache.getProducts(true);
+
     // Read the json from body and transfer it to a product class
     Product newProduct = new Gson().fromJson(body, Product.class);
 

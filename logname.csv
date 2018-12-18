@@ -1,0 +1,32 @@
+;Cestro;34573103+Cestro@users.noreply.github.com;Wed, 21 Nov 2018 09:13:20 +0100;fixes and rebuild for war;; 1 file changed; 2 insertions(+); 2 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Tue, 20 Nov 2018 15:53:08 +0100;Små ændringer og optimering, påbegyndt server setup;; 6 files changed; 17 insertions(+); 24 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Tue, 20 Nov 2018 14:36:30 +0100;Add files via upload;; 1 file changed; 175 insertions(+);
+;Cestro;34573103+Cestro@users.noreply.github.com;Mon, 19 Nov 2018 16:49:20 +0100;get order nested queries fixed;; 1 file changed; 4 insertions(+); 3 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Mon, 19 Nov 2018 16:40:33 +0100;Nested queries fixed and update user tokens fixed;; 3 files changed; 72 insertions(+); 49 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Thu, 15 Nov 2018 17:42:03 +0100;Fejlrettelser og udarbejdning af nested queries, elsker sql...;; 2 files changed; 45 insertions(+); 11 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Tue, 13 Nov 2018 12:11:08 +0100;Login og token er nu funktionelt og delete user opdateret;; 7 files changed; 189 insertions(+); 23 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Mon, 12 Nov 2018 15:14:37 +0100;Login fundament lavet, tilfæjelser bliver lavet løbende;; 6 files changed; 107 insertions(+); 31 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Tue, 6 Nov 2018 17:02:13 +0100;Transaktions todo, næsten færdiggjort;; 3 files changed; 95 insertions(+); 47 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Mon, 5 Nov 2018 16:13:33 +0100;Update users (WIP), forceupdate true efter Ændringer (WIP) + rettelser;; 6 files changed; 64 insertions(+); 14 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Mon, 5 Nov 2018 14:52:26 +0100;Ã†ndringer til salt og hashing, igang med forceupdate til true;; 3 files changed; 17 insertions(+); 5 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Mon, 5 Nov 2018 13:43:51 +0100;Fixed orderCache, fejl i sql statement og tilføjet delete user metode (WIP);; 4 files changed; 40 insertions(+); 4 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Sat, 3 Nov 2018 12:29:36 +0100;kommentarer;; 2 files changed; 2 insertions(+); 2 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Sat, 3 Nov 2018 12:26:30 +0100;Added cache to Product and User;; 3 files changed; 13 insertions(+); 3 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Thu, 1 Nov 2018 17:28:19 +0100;Fejlrettelser til tidligere kode;; 5 files changed; 22 insertions(+); 9 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Thu, 1 Nov 2018 16:04:24 +0100;Tilføjet cache til Order og User klassen;; 5 files changed; 91 insertions(+); 3 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Thu, 1 Nov 2018 14:37:56 +0100;Tiføjet hashing;; 9 files changed; 47 insertions(+); 17 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Tue, 30 Oct 2018 17:00:05 +0100;Flyttet encryption til ressources;; 5 files changed; 22 insertions(+); 5 deletions(-)
+;Cestro;34573103+Cestro@users.noreply.github.com;Tue, 30 Oct 2018 15:52:36 +0100;besked;; 2 files changed; 5 insertions(+);
+;Cestro;34573103+Cestro@users.noreply.github.com;Tue, 23 Oct 2018 16:30:53 +0200;test;; 12 files changed; 103 insertions(+); 64 deletions(-)
+;Jan Aagaard Meier;janzeh@gmail.com;Tue, 16 Oct 2018 14:47:17 +0200;README.md;; 1 file changed; 0 insertions(+); 0 deletions(-)
+;Jan Aagaard Meier;janzeh@gmail.com;Tue, 16 Oct 2018 14:46:14 +0200;Update README;; 2 files changed; 11 insertions(+); 7 deletions(-)
+;Henrik Thorn;henrikthorn@it-kartellet.dk;Sun, 14 Oct 2018 12:15:56 +0200;Added readme;; 1 file changed; 27 insertions(+);
+;Henrik Thorn;henrikthorn@it-kartellet.dk;Sun, 14 Oct 2018 12:14:57 +0200;Added solr data;; 1 file changed; 100001 insertions(+);
+;Henrik Thorn;henrikthorn@it-kartellet.dk;Sat, 13 Oct 2018 23:10:53 +0200;Added sqldump;; 1 file changed; 173 insertions(+);
+;Henrik Thorn;henrikthorn@it-kartellet.dk;Sat, 13 Oct 2018 23:04:37 +0200;Added comments for everything;; 13 files changed; 89 insertions(+); 2 deletions(-)
+;Henrik Thorn;henrikthorn@it-kartellet.dk;Thu, 11 Oct 2018 20:34:47 +0200;Added SolR Search to the project;; 4 files changed; 146 insertions(+); 15 deletions(-)
+;Henrik Thorn;henrikthorn@it-kartellet.dk;Thu, 11 Oct 2018 19:12:58 +0200;Added a lot of work...;; 97 files changed; 13997 insertions(+); 63 deletions(-)
+;Henrik Thorn;henrikthorn@it-kartellet.dk;Thu, 11 Oct 2018 11:26:28 +0200;Reformat of code and further added caching layer to products that has to be used;; 14 files changed; 93 insertions(+); 17 deletions(-)
+;Henrik Thorn;henrikthorn@it-kartellet.dk;Thu, 11 Oct 2018 11:02:20 +0200;Fixed code format to fit specs of Google Java Format;; 13 files changed; 547 insertions(+); 455 deletions(-)
+;Henrik Thorn;henrikthorn@it-kartellet.dk;Thu, 11 Oct 2018 10:44:57 +0200;Gathered all the work in one project. Now we need to create SolR instance and further endpoints;; 22 files changed; 886 insertions(+);
+;Henrik Thorn;henrikthorn@it-kartellet.dk;Thu, 11 Oct 2018 09:48:52 +0200;Added gitignore;; 1 file changed; 136 insertions(+);
