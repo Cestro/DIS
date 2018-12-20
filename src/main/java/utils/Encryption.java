@@ -8,7 +8,7 @@ public final class Encryption {
     if (Config.getEncryption()) {
 
       // The key is predefined and hidden in code
-      // TODO: Create a more complex code and store it somewhere better: Fixed tjek efter
+      // TODO: Create a more complex code and store it somewhere better: Fixed
       //-----Vi vil gerne have flyttet vores key ned i config.json så den ikke står direkte i koden.
       //-----Ressources bliver ikke committed til git. Der skal derfor også laves referencer i Config klassen.
       //-----For at kunne tilgå "key" i config.json.

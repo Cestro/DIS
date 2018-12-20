@@ -28,11 +28,11 @@ public class OrderEndpoints {
     // Call our controller-layer in order to get the order from the DB
     Order order = OrderController.getOrder(idOrder);
 
-    // TODO: Add Encryption to JSON: Fixed, tjek efter
+    // TODO: Add Encryption to JSON: Fixed
     // We convert the java object to json with GSON library imported in Maven
     String json = new Gson().toJson(order);
 
-    //--------encryption er klassens navn og encryptDecrypt... er metoden er benyttes.
+    //--------encryption er klassens navn og encryptDecrypt... er metoden der benyttes.
     json = Encryption.encryptDecryptXOR(json);
 
     // Return a response with status 200 and JSON as type
@@ -51,7 +51,7 @@ public class OrderEndpoints {
     //--- Calling from the chache in order to minimize the times needed to ping the DB
     ArrayList<Order> orders = orderCache.getOrders(false);
 
-    // TODO: Add Encryption to JSON: Fixed tjek efter
+    // TODO: Add Encryption to JSON: Fixed
     // We convert the java object to json with GSON library imported in Maven
     String json = new Gson().toJson(orders);
 
@@ -59,7 +59,7 @@ public class OrderEndpoints {
     json = Encryption.encryptDecryptXOR(json);
 
     // Return a response with status 200 and JSON as type
-    return Response.status(200).type(MediaType.TEXT_PLAIN_TYPE).entity(json).build();
+    return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
   }
 
   @POST

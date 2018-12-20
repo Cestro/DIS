@@ -29,16 +29,6 @@ public class User {
     this.token = token;
   }
 
-  public long getcreatedTime() {
-    return createdTime;
-  }
-
-  public void setcreatedTime(long createdTime){
-    this.createdTime = createdTime;
-  }
-
-  //public String getFirstToken() {return id+firstname+lastname+password+email;}
-
   public int getId() {
     return id;
   }

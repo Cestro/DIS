@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.Product;
 import utils.Config;
 
+//Unofficial TODO: Created cache: Fixed
 public class ProductCache {
 
   // List of products

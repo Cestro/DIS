@@ -28,7 +28,7 @@ public class ProductEndpoints {
     // Call our controller-layer in order to get the order from the DB
     Product product = ProductController.getProduct(idProduct);
 
-    // TODO: Add Encryption to JSON: Fixed tjek efter
+    // TODO: Add Encryption to JSON: Fixed
     // We convert the java object to json with GSON library imported in Maven
     String json = new Gson().toJson(product);
 
@@ -51,7 +51,7 @@ public class ProductEndpoints {
     //--- ændret til productcache istedet for productcontroller så arraylisten hentes fra chachen
     ArrayList<Product> products = productCache.getProducts(false);
 
-    // TODO: Add Encryption to JSON: Fixed tjek efter
+    // TODO: Add Encryption to JSON: Fixed
     // We convert the java object to json with GSON library imported in Maven
     String json = new Gson().toJson(products);
 
@@ -59,7 +59,7 @@ public class ProductEndpoints {
     json = Encryption.encryptDecryptXOR(json);
 
     // Return a response with status 200 and JSON as type
-    return Response.status(200).type(MediaType.TEXT_PLAIN_TYPE).entity(json).build();
+    return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
   }
 
   @POST
@@ -83,7 +83,7 @@ public class ProductEndpoints {
       // Return a response with status 200 and JSON as type
       return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
     } else {
-      return Response.status(400).entity("Could not create user").build();
+      return Response.status(400).entity("Could not create product").build();
     }
   }
 }

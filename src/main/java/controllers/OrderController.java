@@ -34,7 +34,7 @@ public class OrderController {
             "LEFT JOIN address AS shipping ON orders.shipping_address_id=shipping.id \n" +
             "WHERE orders.id=" + id;
 
-    // TODO: Do the query in the database and create an empty object for the results FIXED
+    // Unofficial TODO: Do the query in the database and create an empty object for the results FIXED
     ResultSet rs = dbCon.query(sql);
     Order order = null;
 
@@ -66,7 +66,7 @@ public class OrderController {
                 rs.getString("zipcode")
         );
 
-        // Create an object instance of order from the database dataa
+        // Create an object instance of order from the database data
         order =
             new Order(
                 rs.getInt("id"),
@@ -109,12 +109,6 @@ public class OrderController {
             "LEFT JOIN user ON orders.user_id=user.id \n" +
             "LEFT JOIN address AS billing ON orders.billing_address_id=billing.id \n" +
             "LEFT JOIN address AS shipping ON orders.shipping_address_id=shipping.id";
-/*
-            "SELECT orders.id, orders.user_id, orders.billing_address_id, \n" +
-            "orders.shipping_address_id, user.first_name, user.last_name, user.email,\n" +
-            "billing.zipcode, shipping.zipcode, orders.order_total, orders.created_at,\n" +
-            "orders.updated_at";
-*/
 
     ResultSet rs = dbCon.query(sql);
     ArrayList<Order> orders = new ArrayList<Order>();

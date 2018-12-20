@@ -34,7 +34,7 @@ public class UserEndpoints {
     // Use the ID to get the user from the controller.
     User user = UserController.getUser(idUser);
 
-    // TODO: Add Encryption to JSON: Fixed tjek efter
+    // TODO: Add Encryption to JSON: Fixed
     // Convert the user object to json in order to return the object
     String json = new Gson().toJson(user);
 
@@ -44,10 +44,10 @@ public class UserEndpoints {
     // Return the user with the status code 200
     // TODO: What should happen if something breaks down? FIXED
     if (user != null) {
-      return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity("The user id: " + idUser + " have been found").build();
+      return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
     }
     else {
-      return Response.status(400).type(MediaType.APPLICATION_JSON_TYPE).entity("The user id: " + idUser + " does not exist").build();
+      return Response.status(400).type(MediaType.APPLICATION_JSON_TYPE).entity("The user have not been found").build();
     }
 
   }
@@ -64,7 +64,7 @@ public class UserEndpoints {
     //---Calling from the chache in order to minimize the times needed to ping the DB
     ArrayList<User> users = userCache.getUsers(false);
 
-    // TODO: Add Encryption to JSON: Fixed tjek efter
+    // TODO: Add Encryption to JSON: Fixed
 
     boolean check = true;
 
@@ -125,37 +125,16 @@ public class UserEndpoints {
     String token = UserController.AuthUser(userlogin);
 
     if (token != null) {
-      return Response.status(200).entity(token).build();
+
+      return Response.status(200).entity("Your token is " + token).build();
     }
     return Response.status(400).entity("Password or email didn't match").build();
   }
 
-    /*Hashing hashing = new Hashing();
-    User userData = new Gson().fromJson(UserBody, User.class);
-    User userLogin = UserController.AuthUser(userData.getEmail(), userData.getPassword());
-    String json = new Gson().toJson(userLogin);
-
-    if (userData.getEmail().equals(equals(userLogin.getEmail()) && hashing.UserHashWithSalt(userData.getPassword()).equals(userLogin.getPassword()))){
-//lav egen algoritme, alle user data plus currenttimemillis ved login
-      try {
-        Algorithm algorithm = Algorithm.HMAC256("secret");
-        String token = JWT.create()
-                .withIssuer("auth0")
-                .sign(algorithm);
-      } catch (JWTCreationException exception){
-        //Invalid Signing configuration / Couldn't convert Claims.
-      }
-
-      //return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(token).build();
-    }
-    // Return a response with status 400 and JSON as type
-    return Response.status(400).entity("Email or password was wrong or didn't match").build();
-  }*/
-
   @POST
   @Path("/delete/{delete}/{token}")
   @Consumes(MediaType.APPLICATION_JSON)
-  // TODO: Make the system able to delete users: Fixed, tjek efter.
+  // TODO: Make the system able to delete users: Fixed
   public Response deleteUser(@PathParam("delete") int idToDelete, @PathParam("token") String token) {
 
     if (UserController.getUser(idToDelete).getToken().equals(token)){
@@ -177,7 +156,7 @@ public class UserEndpoints {
     return Response.status(200).entity(" ").build();
   }
 
-  // TODO: Make the system able to update users: Fixed, tjek efter
+  // TODO: Make the system able to update users: Fixed
   @POST
   @Path("update/{token}")
   public Response updateUser(@PathParam("token") String token,String body) {
